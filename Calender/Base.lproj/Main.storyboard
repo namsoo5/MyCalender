@@ -73,6 +73,7 @@
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="WU5-gy-ekh"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="hhd-pi-b9T"/>
                                 </connections>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jyi-WO-FxB">
@@ -167,8 +168,8 @@
                                 <rect key="frame" x="179" y="683" width="56" height="30"/>
                                 <state key="normal" title="일정 등록"/>
                                 <connections>
-                                    <action selector="addEventBt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z1L-NO-Tqq"/>
                                     <action selector="beforeBt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cPZ-by-Bh2"/>
+                                    <segue destination="sV8-yQ-A6Y" kind="presentation" identifier="MonthEvent" id="QYj-It-OmM"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -282,7 +283,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pXl-Zp-QrX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1718.840579710145" y="-515.625"/>
+            <point key="canvasLocation" x="1887" y="21"/>
         </scene>
         <!--주간-->
         <scene sceneID="0l9-AI-Tjk">
@@ -442,6 +443,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cle-2k-Xac">
                                 <rect key="frame" x="179" y="683" width="56" height="30"/>
                                 <state key="normal" title="일정 등록"/>
+                                <connections>
+                                    <segue destination="sV8-yQ-A6Y" kind="presentation" id="P1N-7w-DCH"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -520,4 +524,7 @@
             <point key="canvasLocation" x="47.826086956521742" y="20.758928571428569"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="QYj-It-OmM"/>
+    </inferredMetricsTieBreakers>
 </document>

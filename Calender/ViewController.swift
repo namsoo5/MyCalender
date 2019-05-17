@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import FMDB
 
-class ViewController: UIViewController, UICollectionViewDataSource {
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var MonthLabel: UILabel!
@@ -25,6 +24,8 @@ class ViewController: UIViewController, UICollectionViewDataSource {
     var direct = 0   // 다음달, 저번달, 이번달 구분
     var posIndex = 3 // 날짜 인덱스저장
     var leapCount = 3 //윤달체크
+    
+    var selectDay = 0 //선택날짜 체크
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,8 +110,10 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         }
     }
     
-    @IBAction func addEventBt(_ sender: Any) {
-        
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "MonthEvent"{
+            
+        }
     }
     
     
@@ -134,7 +137,12 @@ class ViewController: UIViewController, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell: DateCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "dayCell", for: indexPath) as? DateCollectionViewCell else {return UICollectionViewCell()}
         
-        cell.backgroundColor = UIColor.clear
+        //선택상태표시
+        if selectDay == indexPath.item{
+            cell.backgroundColor = UIColor.gray
+        }else {
+            cell.backgroundColor = UIColor.clear
+        }
         
         //가린거 풀어주기
         if cell.isHidden {
@@ -204,5 +212,14 @@ class ViewController: UIViewController, UICollectionViewDataSource {
     
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell: DateCollectionViewCell = collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell else {return}
+        print(cell.dateLabel.text!)
+        selectDay = indexPath.item
+        //cell.backgroundColor = UIColor.gray
+        collectionView.reloadData()
+        
+    }
+
 }
 
