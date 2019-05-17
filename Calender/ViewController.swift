@@ -14,15 +14,15 @@ class ViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var MonthLabel: UILabel!
     
     let Months = ["1월", "2월", "3월", "4월","5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-    let weeks = ["Mon", "Tue", "Wen", "Thur", "Fri", "Sat", "Sun"]
+    let weeks = ["Sun","Mon", "Tue", "Wen", "Thur", "Fri", "Sat"]
     var lastDay = [31,28,31,30,31,30,31,31,30,31,30,31]
     
     var curMonth = ""
-    var emptyBox = 2  //이번달 달력 빈칸
+    var emptyBox = 3  //이번달 달력 빈칸
     var nextEmptyBox = Int()  //다음달 달력 빈칸
     var beforeEmptyBox = 0  //저번달 달력 빈칸
     var direct = 0   // 다음달, 저번달, 이번달 구분
-    var posIndex = 2 // 날짜 인덱스저장
+    var posIndex = 3 // 날짜 인덱스저장
     var leapCount = 3 //윤달체크
     
     override func viewDidLoad() {
@@ -155,7 +155,7 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         }
         
         switch indexPath.item {
-        case 6,13,20,27,34:  //주말표시
+        case 0,7,14,21,28,35:  //주말표시
             cell.dateLabel.textColor = UIColor.red
         default:
             break
