@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FMDB
 
 class ViewController: UIViewController, UICollectionViewDataSource {
 
@@ -107,6 +108,11 @@ class ViewController: UIViewController, UICollectionViewDataSource {
             collectionView.reloadData()
         }
     }
+    
+    @IBAction func addEventBt(_ sender: Any) {
+        
+    }
+    
     
     //MARK: - CollectionView
     

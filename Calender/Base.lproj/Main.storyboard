@@ -163,17 +163,27 @@
                                     <constraint firstItem="d0I-X4-Yum" firstAttribute="width" secondItem="l18-ok-mle" secondAttribute="width" id="zpU-Rp-Hyf"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jNP-I9-9gc">
+                                <rect key="frame" x="179" y="683" width="56" height="30"/>
+                                <state key="normal" title="일정 등록"/>
+                                <connections>
+                                    <action selector="addEventBt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="z1L-NO-Tqq"/>
+                                    <action selector="beforeBt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cPZ-by-Bh2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Jyi-WO-FxB" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="80" id="0L2-gO-jzF"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Tyq-pX-ZZ4" secondAttribute="trailing" constant="30" id="1JG-vZ-16J"/>
+                            <constraint firstItem="jNP-I9-9gc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2TF-Mh-Ekb"/>
                             <constraint firstItem="Jyi-WO-FxB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Cq1-YM-BKn"/>
                             <constraint firstItem="0RA-O4-4B1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="80" id="L5W-I1-OtC"/>
                             <constraint firstItem="TPv-Uq-na3" firstAttribute="top" secondItem="0RA-O4-4B1" secondAttribute="bottom" constant="70" id="Vgh-bv-POJ"/>
                             <constraint firstItem="TPv-Uq-na3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="YQp-d7-23B"/>
                             <constraint firstItem="e7Y-XA-ryk" firstAttribute="trailing" secondItem="TPv-Uq-na3" secondAttribute="trailing" id="c25-Ug-Wyp"/>
                             <constraint firstItem="Tyq-pX-ZZ4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="80" id="eKm-UM-eWm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="jNP-I9-9gc" secondAttribute="bottom" constant="100" id="g3T-n6-Utk"/>
                             <constraint firstItem="TPv-Uq-na3" firstAttribute="top" secondItem="e7Y-XA-ryk" secondAttribute="bottom" constant="10" id="ga2-uV-O10"/>
                             <constraint firstItem="0RA-O4-4B1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="30" id="kah-WD-g4m"/>
                             <constraint firstItem="e7Y-XA-ryk" firstAttribute="leading" secondItem="TPv-Uq-na3" secondAttribute="leading" id="q9L-5e-Ujh"/>
@@ -189,6 +199,90 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="966.66666666666674" y="-672.32142857142856"/>
+        </scene>
+        <!--Add Event View Controller-->
+        <scene sceneID="G5p-Y4-rUd">
+            <objects>
+                <viewController id="sV8-yQ-A6Y" customClass="AddEventViewController" customModule="Calender" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3ol-hh-NLO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5월" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WiE-wh-vsd">
+                                <rect key="frame" x="148.5" y="144" width="37" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19일" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HIa-Bv-tbR">
+                                <rect key="frame" x="222.5" y="144" width="49" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oqS-MK-ejD">
+                                <rect key="frame" x="237" y="515" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="fi1-rc-0Bu"/>
+                                </constraints>
+                                <state key="normal" title="저장"/>
+                                <connections>
+                                    <action selector="saveBt:" destination="sV8-yQ-A6Y" eventType="touchUpInside" id="Ldd-Gq-PA5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TOf-gC-e8T">
+                                <rect key="frame" x="117" y="515" width="60" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="TCP-pK-jtH"/>
+                                </constraints>
+                                <state key="normal" title="취소"/>
+                                <connections>
+                                    <action selector="cancelBt:" destination="sV8-yQ-A6Y" eventType="touchUpInside" id="2hS-A7-5OC"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="오늘은 5월 19일" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kYF-HO-Z0U">
+                                <rect key="frame" x="100" y="222" width="304" height="253"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="kYF-HO-Z0U" secondAttribute="height" multiplier="304:253" id="ruy-OT-3Ra"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="일정:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ixd-VP-25Z">
+                                <rect key="frame" x="40" y="222" width="50" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="WiE-wh-vsd" firstAttribute="top" secondItem="jYY-qa-flQ" secondAttribute="top" constant="100" id="3fY-kW-Wkp"/>
+                            <constraint firstItem="WiE-wh-vsd" firstAttribute="centerX" secondItem="3ol-hh-NLO" secondAttribute="centerX" constant="-40" id="DYE-Mt-I5H"/>
+                            <constraint firstItem="oqS-MK-ejD" firstAttribute="centerX" secondItem="3ol-hh-NLO" secondAttribute="centerX" constant="60" id="Glv-JB-ohf"/>
+                            <constraint firstItem="kYF-HO-Z0U" firstAttribute="leading" secondItem="Ixd-VP-25Z" secondAttribute="trailing" constant="10" id="Gmb-fT-qND"/>
+                            <constraint firstItem="oqS-MK-ejD" firstAttribute="top" secondItem="kYF-HO-Z0U" secondAttribute="bottom" constant="40" id="LCa-n8-GVt"/>
+                            <constraint firstItem="HIa-Bv-tbR" firstAttribute="top" secondItem="jYY-qa-flQ" secondAttribute="top" constant="100" id="LhY-50-nvq"/>
+                            <constraint firstItem="TOf-gC-e8T" firstAttribute="centerX" secondItem="3ol-hh-NLO" secondAttribute="centerX" constant="-60" id="M8G-vf-r5U"/>
+                            <constraint firstItem="jYY-qa-flQ" firstAttribute="trailing" secondItem="kYF-HO-Z0U" secondAttribute="trailing" constant="10" id="V9f-sd-fBt"/>
+                            <constraint firstItem="kYF-HO-Z0U" firstAttribute="top" secondItem="Ixd-VP-25Z" secondAttribute="top" id="VyN-Yc-6cn"/>
+                            <constraint firstItem="Ixd-VP-25Z" firstAttribute="leading" secondItem="jYY-qa-flQ" secondAttribute="leading" constant="40" id="dg9-01-eAZ"/>
+                            <constraint firstItem="HIa-Bv-tbR" firstAttribute="centerX" secondItem="3ol-hh-NLO" secondAttribute="centerX" constant="40" id="v4f-qE-W2G"/>
+                            <constraint firstItem="Ixd-VP-25Z" firstAttribute="top" secondItem="WiE-wh-vsd" secondAttribute="bottom" constant="48" id="vQ5-Wo-xf1"/>
+                            <constraint firstItem="TOf-gC-e8T" firstAttribute="top" secondItem="kYF-HO-Z0U" secondAttribute="bottom" constant="40" id="yFk-0P-jAd"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="jYY-qa-flQ"/>
+                    </view>
+                    <connections>
+                        <outlet property="dayLabel" destination="HIa-Bv-tbR" id="KxJ-lA-uf8"/>
+                        <outlet property="eventTextView" destination="kYF-HO-Z0U" id="c8c-oW-4Y6"/>
+                        <outlet property="monthLabel" destination="WiE-wh-vsd" id="yjd-Pi-gGS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pXl-Zp-QrX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1718.840579710145" y="-515.625"/>
         </scene>
         <!--주간-->
         <scene sceneID="0l9-AI-Tjk">
@@ -345,6 +439,10 @@
                                     <outlet property="dataSource" destination="YrC-Kf-dq0" id="RnH-6V-MmK"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cle-2k-Xac">
+                                <rect key="frame" x="179" y="683" width="56" height="30"/>
+                                <state key="normal" title="일정 등록"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -358,6 +456,8 @@
                             <constraint firstItem="Vwj-hA-Pk7" firstAttribute="top" secondItem="ejg-t3-2p4" secondAttribute="top" constant="80" id="WMN-kn-qfW"/>
                             <constraint firstItem="yyG-hv-8Cd" firstAttribute="top" secondItem="ejg-t3-2p4" secondAttribute="top" constant="80" id="fwR-ta-Cqt"/>
                             <constraint firstItem="qsy-36-qUO" firstAttribute="centerX" secondItem="kzU-zZ-7lm" secondAttribute="centerX" id="hqI-Nh-nKJ"/>
+                            <constraint firstItem="Cle-2k-Xac" firstAttribute="centerX" secondItem="kzU-zZ-7lm" secondAttribute="centerX" id="kvV-Rt-Voq"/>
+                            <constraint firstItem="ejg-t3-2p4" firstAttribute="bottom" secondItem="Cle-2k-Xac" secondAttribute="bottom" constant="100" id="qLq-87-3Jh"/>
                             <constraint firstItem="u66-Ny-V9V" firstAttribute="top" secondItem="Qwb-FN-o4d" secondAttribute="bottom" constant="10" id="qkS-MD-hE1"/>
                             <constraint firstItem="Vwj-hA-Pk7" firstAttribute="leading" secondItem="ejg-t3-2p4" secondAttribute="leading" constant="30" id="xPb-Be-2GA"/>
                         </constraints>
@@ -380,7 +480,17 @@
                     <view key="view" contentMode="scaleToFill" id="uhu-pE-H5a">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="APC-UV-xYy">
+                                <rect key="frame" x="179" y="683" width="56" height="30"/>
+                                <state key="normal" title="일정 등록"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="APC-UV-xYy" firstAttribute="centerX" secondItem="uhu-pE-H5a" secondAttribute="centerX" id="0hH-cI-tbe"/>
+                            <constraint firstItem="Dyf-p1-Tkt" firstAttribute="bottom" secondItem="APC-UV-xYy" secondAttribute="bottom" constant="100" id="Gkg-wQ-kdh"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Dyf-p1-Tkt"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="일간" id="lj7-I2-hFt"/>
