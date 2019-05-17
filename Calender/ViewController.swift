@@ -14,7 +14,7 @@ class ViewController: UIViewController, UICollectionViewDataSource {
     @IBOutlet weak var MonthLabel: UILabel!
     
     let Months = ["1월", "2월", "3월", "4월","5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-    let weeks = ["Sun","Mon", "Tue", "Wen", "Thur", "Fri", "Sat"]
+    //let weeks = ["Sun","Mon", "Tue", "Wen", "Thur", "Fri", "Sat"]
     var lastDay = [31,28,31,30,31,30,31,31,30,31,30,31]
     
     var curMonth = ""
@@ -30,11 +30,10 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         
         curMonth = Months[month]
         MonthLabel.text = "\(year) \(curMonth)"
-        print("\(weekday)")
-        print("\(day)")
         
     }
 
+    //MARK: - 버튼 처리
 
     @IBAction func nextBt(_ sender: Any) {
         switch curMonth {
@@ -109,14 +108,14 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         }
     }
     
+    //MARK: - CollectionView
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         switch direct {
         case 0:
-            print("cell count: \(lastDay[month]) + \(emptyBox)")
             return lastDay[month] + emptyBox
         case 1:
-            print("cell count: \(lastDay[month]) + \(nextEmptyBox)")
             return lastDay[month] + nextEmptyBox
         case -1:
             return lastDay[month] + beforeEmptyBox
