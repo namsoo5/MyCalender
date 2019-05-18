@@ -19,7 +19,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource {
 //    var beforeEmptyBox = 0  //저번달 달력 빈칸
 //    var direct = 0   // 다음달, 저번달, 이번달 구분
 //    var posIndex = 3 // 날짜 인덱스저장
-    var leapCount = 3 //윤달체크
+    var leapCount = 3 //윤달체크 
     
     var WeekFirstDay = 0
     
@@ -133,7 +133,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource {
                 }
      //           getStartDayPos()
                 
-                print(year)
+                
             }
             
         default:

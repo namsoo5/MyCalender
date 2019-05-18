@@ -489,7 +489,7 @@
         <!--일간-->
         <scene sceneID="Agq-Cg-J7c">
             <objects>
-                <viewController id="x5O-7D-njR" sceneMemberID="viewController">
+                <viewController id="x5O-7D-njR" customClass="DailyController" customModule="Calender" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uhu-pE-H5a">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -498,19 +498,81 @@
                                 <rect key="frame" x="179" y="683" width="56" height="30"/>
                                 <state key="normal" title="일정 등록"/>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2019년 5월 19일" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JsU-y5-Beu">
+                                <rect key="frame" x="147" y="124" width="120" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="now-lR-OqZ">
+                                <rect key="frame" x="10" y="185" width="394" height="312"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="now-lR-OqZ" secondAttribute="height" multiplier="197:156" id="yNB-6Q-L4x"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dailyCell" textLabel="Xxk-Jh-MjT" rowHeight="65" style="IBUITableViewCellStyleDefault" id="QHL-PR-pgs">
+                                        <rect key="frame" x="0.0" y="28" width="394" height="65"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QHL-PR-pgs" id="L2a-jY-PdR">
+                                            <rect key="frame" x="0.0" y="0.0" width="394" height="64.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xxk-Jh-MjT">
+                                                    <rect key="frame" x="20" y="0.0" width="354" height="64.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="x5O-7D-njR" id="bh2-xW-Ruv"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lhX-Z6-s6j">
+                                <rect key="frame" x="364" y="124" width="30" height="30"/>
+                                <state key="normal" title="next"/>
+                                <connections>
+                                    <action selector="nextBt:" destination="x5O-7D-njR" eventType="touchUpInside" id="NhA-s8-CUH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Va6-8l-wK0">
+                                <rect key="frame" x="20" y="124" width="45" height="30"/>
+                                <state key="normal" title="before"/>
+                                <connections>
+                                    <action selector="beforeBt:" destination="x5O-7D-njR" eventType="touchUpInside" id="6a1-NW-ZJT"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="APC-UV-xYy" firstAttribute="centerX" secondItem="uhu-pE-H5a" secondAttribute="centerX" id="0hH-cI-tbe"/>
+                            <constraint firstItem="Va6-8l-wK0" firstAttribute="top" secondItem="Dyf-p1-Tkt" secondAttribute="top" constant="80" id="2b0-o8-Oj1"/>
+                            <constraint firstItem="JsU-y5-Beu" firstAttribute="centerX" secondItem="uhu-pE-H5a" secondAttribute="centerX" id="5lf-ah-OWx"/>
                             <constraint firstItem="Dyf-p1-Tkt" firstAttribute="bottom" secondItem="APC-UV-xYy" secondAttribute="bottom" constant="100" id="Gkg-wQ-kdh"/>
+                            <constraint firstItem="Dyf-p1-Tkt" firstAttribute="trailing" secondItem="now-lR-OqZ" secondAttribute="trailing" constant="10" id="LNA-Db-Mbe"/>
+                            <constraint firstItem="Va6-8l-wK0" firstAttribute="leading" secondItem="Dyf-p1-Tkt" secondAttribute="leading" constant="20" id="Vcy-1W-jh2"/>
+                            <constraint firstItem="now-lR-OqZ" firstAttribute="leading" secondItem="Dyf-p1-Tkt" secondAttribute="leading" constant="10" id="YyX-mp-WWf"/>
+                            <constraint firstItem="lhX-Z6-s6j" firstAttribute="top" secondItem="Dyf-p1-Tkt" secondAttribute="top" constant="80" id="cdv-X5-QNY"/>
+                            <constraint firstItem="now-lR-OqZ" firstAttribute="top" secondItem="JsU-y5-Beu" secondAttribute="bottom" constant="40" id="dy0-bz-PIL"/>
+                            <constraint firstItem="now-lR-OqZ" firstAttribute="centerX" secondItem="uhu-pE-H5a" secondAttribute="centerX" id="fYt-xU-ung"/>
+                            <constraint firstItem="JsU-y5-Beu" firstAttribute="top" secondItem="Dyf-p1-Tkt" secondAttribute="top" constant="80" id="nhM-K0-K0g"/>
+                            <constraint firstItem="Dyf-p1-Tkt" firstAttribute="trailing" secondItem="lhX-Z6-s6j" secondAttribute="trailing" constant="20" id="oD8-vl-koz"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Dyf-p1-Tkt"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="일간" id="lj7-I2-hFt"/>
+                    <connections>
+                        <outlet property="dateLabel" destination="JsU-y5-Beu" id="v3Z-Cb-fbU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DNJ-Au-bF7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="967" y="729"/>
+            <point key="canvasLocation" x="966.66666666666674" y="728.57142857142856"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="oX3-g3-1Ix">
@@ -534,6 +596,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="UKr-Ab-eyE"/>
+        <segue reference="P1N-7w-DCH"/>
     </inferredMetricsTieBreakers>
 </document>
