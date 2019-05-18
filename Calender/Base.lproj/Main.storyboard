@@ -59,15 +59,26 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YU1-oB-ERU">
+                                                    <rect key="frame" x="10" y="30" width="20" height="10"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="10" id="3Z1-Fs-t7E"/>
+                                                        <constraint firstAttribute="width" constant="20" id="MWY-9f-z6r"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                         </view>
                                         <constraints>
                                             <constraint firstItem="9mI-yo-Yhh" firstAttribute="centerX" secondItem="qdB-I2-Uhl" secondAttribute="centerX" id="PoM-1b-Ths"/>
                                             <constraint firstItem="9mI-yo-Yhh" firstAttribute="centerY" secondItem="qdB-I2-Uhl" secondAttribute="centerY" id="T4Z-Eh-F8O"/>
+                                            <constraint firstItem="YU1-oB-ERU" firstAttribute="centerX" secondItem="qdB-I2-Uhl" secondAttribute="centerX" id="WAT-di-t33"/>
+                                            <constraint firstAttribute="bottom" secondItem="YU1-oB-ERU" secondAttribute="bottom" id="sFI-n2-1Im"/>
                                         </constraints>
                                         <size key="customSize" width="40" height="40"/>
                                         <connections>
                                             <outlet property="dateLabel" destination="9mI-yo-Yhh" id="Evc-Y6-TEX"/>
+                                            <outlet property="eventView" destination="YU1-oB-ERU" id="Zly-dI-6hl"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -168,8 +179,7 @@
                                 <rect key="frame" x="179" y="683" width="56" height="30"/>
                                 <state key="normal" title="일정 등록"/>
                                 <connections>
-                                    <action selector="beforeBt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cPZ-by-Bh2"/>
-                                    <segue destination="sV8-yQ-A6Y" kind="presentation" identifier="MonthEvent" id="QYj-It-OmM"/>
+                                    <action selector="addEventBt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="DaS-Th-ONr"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -195,6 +205,7 @@
                     <connections>
                         <outlet property="MonthLabel" destination="Jyi-WO-FxB" id="MS8-0Y-PfQ"/>
                         <outlet property="collectionView" destination="TPv-Uq-na3" id="fz4-fp-Wvj"/>
+                        <segue destination="sV8-yQ-A6Y" kind="presentation" identifier="MonthEvent" id="UKr-Ab-eyE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -380,14 +391,12 @@
                                 <state key="normal" title="next"/>
                                 <connections>
                                     <action selector="nextBt:" destination="YrC-Kf-dq0" eventType="touchUpInside" id="1e2-zm-1cC"/>
-                                    <action selector="nextBt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pLJ-nd-EoF"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vwj-hA-Pk7">
                                 <rect key="frame" x="30" y="124" width="45" height="30"/>
                                 <state key="normal" title="before"/>
                                 <connections>
-                                    <action selector="beforeBt:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0ve-6h-xdn"/>
                                     <action selector="beforeBt:" destination="YrC-Kf-dq0" eventType="touchUpInside" id="Edj-F6-WLN"/>
                                 </connections>
                             </button>
@@ -525,6 +534,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="QYj-It-OmM"/>
+        <segue reference="UKr-Ab-eyE"/>
     </inferredMetricsTieBreakers>
 </document>

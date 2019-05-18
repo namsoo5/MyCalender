@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FMDB
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
@@ -25,23 +26,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var posIndex = 3 // 날짜 인덱스저장
     var leapCount = 3 //윤달체크
     
-    var selectDay = 0 //선택날짜 체크
+    var select = -1 //선택날짜 체크
+    var selectDay = -1 //다음뷰로 넘길 선택날짜
+    
+    var scheduleSet = [Schedule]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        curMonth = Months[month]
-        MonthLabel.text = "\(year) \(curMonth)"
+        curMonth = Months[cmonth]
+        MonthLabel.text = "\(cyear) \(curMonth)"
         
     }
+   
 
     //MARK: - 버튼 처리
 
     @IBAction func nextBt(_ sender: Any) {
         switch curMonth {
         case "12월":
-            month = 0  //1월로
-            year += 1  //1년증가
+            cmonth = 0  //1월로
+            cyear += 1  //1년증가
             direct = 1
             
             //윤달체크
@@ -58,26 +63,26 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             }
             
             getStartDayPos()
-            curMonth = Months[month] //텍스트수정
-            MonthLabel.text = "\(year) \(curMonth)"  //라벨수정
+            curMonth = Months[cmonth] //텍스트수정
+            MonthLabel.text = "\(cyear) \(curMonth)"  //라벨수정
             collectionView.reloadData()  // 해당하는 날짜 리로드
             
         default:
             direct = 1
             
             getStartDayPos()
-            month += 1
+            cmonth += 1
             
-            curMonth = Months[month]
-            MonthLabel.text = "\(year) \(curMonth)"
+            curMonth = Months[cmonth]
+            MonthLabel.text = "\(cyear) \(curMonth)"
             collectionView.reloadData()
         }
     }
     @IBAction func beforeBt(_ sender: Any) {
         switch curMonth {
         case "1월":
-            month = 11
-            year -= 1
+            cmonth = 11
+            cyear -= 1
             direct = -1
             
             //윤달체크
@@ -95,24 +100,39 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             }
             
             getStartDayPos()
-            curMonth = Months[month]
-            MonthLabel.text = "\(year) \(curMonth)"
+            curMonth = Months[cmonth]
+            MonthLabel.text = "\(cyear) \(curMonth)"
             collectionView.reloadData()
             
         default:
-            month -= 1
+            cmonth -= 1
             direct = -1
             
             getStartDayPos()
-            curMonth = Months[month]
-            MonthLabel.text = "\(year) \(curMonth)"
+            curMonth = Months[cmonth]
+            MonthLabel.text = "\(cyear) \(curMonth)"
             collectionView.reloadData()
+        }
+    }
+    
+    @IBAction func addEventBt(_ sender: Any) {
+        if selectDay == -1 {
+            let alert:UIAlertController = UIAlertController.init(title: "확인", message: "날짜를 선택해주세요", preferredStyle: .alert )
+            let ok:UIAlertAction = UIAlertAction.init(title: "확인", style: .default , handler: nil)
+            alert.addAction(ok)
+            present(alert, animated: true, completion: nil)
+        }else {
+            performSegue(withIdentifier: "MonthEvent", sender: self)
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MonthEvent"{
+            guard let VC:AddEventViewController = segue.destination as? AddEventViewController else {return}
             
+            VC.eventDay = selectDay
+            VC.eventMonth = cmonth+1
+            VC.eventYear = cyear
         }
     }
     
@@ -123,11 +143,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         switch direct {
         case 0:
-            return lastDay[month] + emptyBox
+            return lastDay[cmonth] + emptyBox
         case 1:
-            return lastDay[month] + nextEmptyBox
+            return lastDay[cmonth] + nextEmptyBox
         case -1:
-            return lastDay[month] + beforeEmptyBox
+            return lastDay[cmonth] + beforeEmptyBox
         default:
             fatalError()
         }
@@ -138,7 +158,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         guard let cell: DateCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "dayCell", for: indexPath) as? DateCollectionViewCell else {return UICollectionViewCell()}
         
         //선택상태표시
-        if selectDay == indexPath.item{
+        if select == indexPath.item{
             cell.backgroundColor = UIColor.gray
         }else {
             cell.backgroundColor = UIColor.clear
@@ -174,6 +194,21 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             break
         }
         
+        if !cell.eventView.isHidden {
+           cell.eventView.isHidden = true
+        }
+        
+        for schedule in scheduleSet{
+            if schedule.year == cyear {
+                if schedule.month == cmonth+1 {
+                    if schedule.getDay(day: Int(cell.dateLabel.text!)!) {
+                        cell.eventView.isHidden = false
+                        cell.eventView.backgroundColor = UIColor.red
+                    }
+                }
+            }
+        }
+        
         return cell
     }
     
@@ -197,11 +232,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //            posIndex = emptyBox
             
         case 1...:
-            nextEmptyBox = (posIndex + lastDay[month]) % 7
+            nextEmptyBox = (posIndex + lastDay[cmonth]) % 7
             posIndex = nextEmptyBox
             
         case -1:
-            beforeEmptyBox = ( 7 - (lastDay[month] - posIndex) % 7)
+            beforeEmptyBox = ( 7 - (lastDay[cmonth] - posIndex) % 7)
             if beforeEmptyBox == 7 {
                 beforeEmptyBox = 0
             }
@@ -215,10 +250,56 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell: DateCollectionViewCell = collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell else {return}
         print(cell.dateLabel.text!)
-        selectDay = indexPath.item
-        //cell.backgroundColor = UIColor.gray
+        selectDay = Int(cell.dateLabel.text!)!
+        select = indexPath.item
         collectionView.reloadData()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("viewAppear")
+        let fileURL = try! FileManager.default
+            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .appendingPathComponent("event.sqlite")
+        let database = FMDatabase(url: fileURL)
+        
+        guard database.open() else {
+            print("Unable to open database")
+            return
+        }
+        
+        do {
+          //  try database.executeUpdate("drop table calender", values: nil)
+            
+            try database.executeUpdate("create table if not exists calender(year int, month int, day int, content text)", values: nil)
+            
+            let rs = try database.executeQuery("select year, month, day, content from calender", values: nil)
+            while rs.next() {
+                if let y = rs.string(forColumn: "year"), let m = rs.string(forColumn: "month") , let d = rs.string(forColumn: "day") , let c = rs.string(forColumn: "content") {
+                    print("year = \(y), month = \(m), day = \(d), content = \(c)")
+                    
+                   //이미 같은년도 같은달 일정등록시 날짜만 저장
+                    for schedule in scheduleSet{
+                        if schedule.year == Int(y){
+                            if schedule.month == cmonth+1{
+                                schedule.addDay(day: Int(d) ?? 0)
+                                return
+                            }
+                        }
+                    }
+                    
+                    let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0)
+                    scheduleSet.append(event)
+                   
+                }
+            }
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        
+        database.close()
+        
+        self.collectionView.reloadData()
     }
 
 }

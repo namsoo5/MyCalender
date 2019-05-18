@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1B52FDFA228F26680021D809 /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B52FDF9228F26680021D809 /* AddEventViewController.swift */; };
+		1B52FDFC228FD0C80021D809 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B52FDFB228FD0C80021D809 /* Schedule.swift */; };
 		1BF18B2F228BCE3B00D94429 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF18B2E228BCE3B00D94429 /* AppDelegate.swift */; };
 		1BF18B31228BCE3B00D94429 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BF18B30228BCE3B00D94429 /* ViewController.swift */; };
 		1BF18B34228BCE3C00D94429 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BF18B32228BCE3B00D94429 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		1B52FDF9228F26680021D809 /* AddEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
+		1B52FDFB228FD0C80021D809 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		1BF18B2B228BCE3B00D94429 /* Calender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calender.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BF18B2E228BCE3B00D94429 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1BF18B30228BCE3B00D94429 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				1BF18B42228BF1E000D94429 /* DailyController.swift */,
 				1BF18B32228BCE3B00D94429 /* Main.storyboard */,
 				1B52FDF9228F26680021D809 /* AddEventViewController.swift */,
+				1B52FDFB228FD0C80021D809 /* Schedule.swift */,
 				1BF18BC8228DA81A00D94429 /* DateCollectionViewCell.swift */,
 				1BF18B35228BCE3E00D94429 /* Assets.xcassets */,
 				1BF18B37228BCE3E00D94429 /* LaunchScreen.storyboard */,
@@ -229,6 +232,7 @@
 				1BF18BCB228DA97700D94429 /* CalendarValue.swift in Sources */,
 				1B52FDFA228F26680021D809 /* AddEventViewController.swift in Sources */,
 				1BF18B43228BF1E000D94429 /* DailyController.swift in Sources */,
+				1B52FDFC228FD0C80021D809 /* Schedule.swift in Sources */,
 				1BF18BC9228DA81A00D94429 /* DateCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
