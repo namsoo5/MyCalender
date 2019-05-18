@@ -29,7 +29,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var select = -1 //선택날짜 체크
     var selectDay = -1 //다음뷰로 넘길 선택날짜
     
-    var scheduleSet = [Schedule]()
+    //var scheduleSet = [Schedule]()
+    let app: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,12 +38,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         curMonth = Months[cmonth]
         MonthLabel.text = "\(cyear) \(curMonth)"
         
+        sqlite()
     }
    
 
     //MARK: - 버튼 처리
 
     @IBAction func nextBt(_ sender: Any) {
+        //다음달달력누를시 선택초기화
+        selectDay = -1
+        select = -1
         switch curMonth {
         case "12월":
             cmonth = 0  //1월로
@@ -79,6 +84,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
     }
     @IBAction func beforeBt(_ sender: Any) {
+        //다음달달력누를시 선택초기화
+        selectDay = -1
+        select = -1
         switch curMonth {
         case "1월":
             cmonth = 11
@@ -195,17 +203,21 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
         
         if !cell.eventView.isHidden {
-           cell.eventView.isHidden = true
+            cell.eventView.isHidden = true
+            cell.eventView.backgroundColor = UIColor.clear
         }
         
-        for schedule in scheduleSet{
-            if schedule.year == cyear {
-                if schedule.month == cmonth+1 {
-                    if schedule.getDay(day: Int(cell.dateLabel.text!)!) {
-                        cell.eventView.isHidden = false
-                        cell.eventView.backgroundColor = UIColor.red
-                    }
+        for schedule in app.scheduleSet{
+            if schedule.year == cyear &&  schedule.month == cmonth+1
+            {
+            
+                if schedule.getDay(day: Int(cell.dateLabel.text!)!) {
+                    print("실행")
+                    print("\(schedule.getArray())")
+                    cell.eventView.isHidden = false
+                    cell.eventView.backgroundColor = UIColor.red
                 }
+                
             }
         }
         
@@ -258,6 +270,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     override func viewWillAppear(_ animated: Bool) {
         print("viewAppear")
+       sqlite()
+       
+    }
+
+    func sqlite(){
         let fileURL = try! FileManager.default
             .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent("event.sqlite")
@@ -269,7 +286,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
         
         do {
-          //  try database.executeUpdate("drop table calender", values: nil)
+             // try database.executeUpdate("drop table calender", values: nil)
             
             try database.executeUpdate("create table if not exists calender(year int, month int, day int, content text)", values: nil)
             
@@ -278,19 +295,26 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 if let y = rs.string(forColumn: "year"), let m = rs.string(forColumn: "month") , let d = rs.string(forColumn: "day") , let c = rs.string(forColumn: "content") {
                     print("year = \(y), month = \(m), day = \(d), content = \(c)")
                     
-                   //이미 같은년도 같은달 일정등록시 날짜만 저장
-                    for schedule in scheduleSet{
-                        if schedule.year == Int(y){
-                            if schedule.month == cmonth+1{
-                                schedule.addDay(day: Int(d) ?? 0)
-                                return
+                    var flag = false
+                    //이미 같은년도 같은달 일정등록시 날짜만 저장
+                    for schedules in app.scheduleSet{
+                        if schedules.year == Int(y) && schedules.month == Int(m){
+                            flag = true
+                            if !schedules.getDay(day: Int(d) ?? 0){
+                                schedules.addDay(day: Int(d) ?? 0)
+                                
                             }
                         }
                     }
                     
-                    let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0)
-                    scheduleSet.append(event)
-                   
+                    // 입력되지않은 년도와 달이라면 새로 만듬
+                    if !flag {
+                        let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0)
+                        
+                        app.scheduleSet.append(event)
+                        //scheduleSet.append(event)
+                    }
+                    
                 }
             }
         } catch {
@@ -301,6 +325,5 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         self.collectionView.reloadData()
     }
-
 }
 

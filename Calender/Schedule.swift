@@ -27,4 +27,8 @@ class Schedule{
     func getDay(day d: Int) -> Bool {
         return self.day.contains(d)
     }
+    
+    func getArray() -> [Int] {
+        return self.day
+    }
 }

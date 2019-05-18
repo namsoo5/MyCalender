@@ -18,6 +18,8 @@ class AddEventViewController: UIViewController {
     var eventDay = Int()
     var eventYear = Int()
     
+    let app: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,6 +50,20 @@ class AddEventViewController: UIViewController {
             let input:String = eventTextView.text ?? " "
             try database.executeUpdate("create table if not exists calender(year int, month int, day int, content text)", values: nil)
             try database.executeUpdate("insert into calender (year, month, day, content) values (?, ?, ?, ?)", values: [eventYear, eventMonth, eventDay, "\(input)"])
+//
+//            var flag = false
+//            for schedule in app.scheduleSet{
+//                if schedule.year == eventYear && schedule.month == eventMonth
+//                {
+//                    schedule.addDay(day: eventDay)
+//                    flag = true
+//
+//                }
+//            }
+//            if !flag {
+//                let event = Schedule.init(year: eventYear, month: eventYear, day: eventDay)
+//                app.scheduleSet.append(event)
+//            }
             
             let action: UIAlertController = UIAlertController.init(title: "완료", message: "저장되었습니다.", preferredStyle: .alert)
             //ok 누르면 창닫힘
