@@ -48,6 +48,20 @@ class DailyController: UIViewController, UITableViewDataSource {
         tableView.reloadData()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "dailyEvent"{
+            guard let vc:AddEventViewController = segue.destination as? AddEventViewController else {return}
+            
+            vc.eventDay = dday
+            vc.eventMonth = dmonth+1
+            vc.eventYear = dyear
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        sqlite()
+        self.tableView.reloadData()
+    }
     //MARK: - tableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -142,6 +156,60 @@ class DailyController: UIViewController, UITableViewDataSource {
         }
         
         dday = lastDay[dmonth]
+    }
+    
+    func sqlite(){
+        
+        app.scheduleSet.removeAll()
+        
+        let fileURL = try! FileManager.default
+            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .appendingPathComponent("event.sqlite")
+        let database = FMDatabase(url: fileURL)
+        
+        guard database.open() else {
+            print("Unable to open database")
+            return
+        }
+        
+        do {
+            // try database.executeUpdate("drop table calender", values: nil)
+            
+            try database.executeUpdate("create table if not exists calender(year int, month int, day int, content text)", values: nil)
+            
+            let rs = try database.executeQuery("select year, month, day, content from calender", values: nil)
+            while rs.next() {
+                if let y = rs.string(forColumn: "year"), let m = rs.string(forColumn: "month") , let d = rs.string(forColumn: "day") , let c = rs.string(forColumn: "content") {
+                    print("year = \(y), month = \(m), day = \(d), content = \(c)")
+                    
+                    var flag = false
+                    //이미 같은년도 같은달 일정등록시 날짜만 저장
+                    for schedules in app.scheduleSet{
+                        if schedules.year == Int(y) && schedules.month == Int(m){
+                            flag = true
+                            //if !schedules.getDay(day: Int(d) ?? 0){
+                            schedules.addDay(day: Int(d) ?? 0)
+                            schedules.addContent(day: Int(d) ?? 0, content: c)
+                            //}
+                        }
+                    }
+                    
+                    // 입력되지않은 년도와 달이라면 새로 만듬
+                    if !flag {
+                        let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
+                        
+                        app.scheduleSet.append(event)
+                        
+                    }
+                    
+                }
+            }
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        
+        database.close()
+        
     }
 
 }

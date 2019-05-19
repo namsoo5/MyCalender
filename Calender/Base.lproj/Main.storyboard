@@ -544,7 +544,7 @@
                                 <rect key="frame" x="179" y="683" width="56" height="30"/>
                                 <state key="normal" title="일정 등록"/>
                                 <connections>
-                                    <segue destination="sV8-yQ-A6Y" kind="presentation" id="rOK-Ma-JV0"/>
+                                    <segue destination="sV8-yQ-A6Y" kind="presentation" identifier="dailyEvent" id="rOK-Ma-JV0"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2019년 5월 19일" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JsU-y5-Beu">
@@ -646,6 +646,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="1eX-Gi-pyS"/>
+        <segue reference="rOK-Ma-JV0"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -53,6 +53,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     override func viewWillAppear(_ animated: Bool) {
         sqlite()
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -177,10 +178,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell: DateCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "weekdayCell", for: indexPath) as? DateCollectionViewCell else {fatalError()}
         
-//        if WeekFirstDay + indexPath.item > lastDay[month]{
-//            WeekFirstDay = 1 - indexPath.item
-//        }
-        
+        cell.backgroundColor = UIColor.clear
         
         if WeekFirstDay + indexPath.item > lastDay[month] {
             checkNextYear(WeekFirstDay + indexPath.item)
@@ -189,12 +187,14 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
             curMonth = Months[month]
             monthLabel.text = "\(year) \(curMonth)"
             cell.weekdayLabel.text = "\(WeekFirstDay+indexPath.item)"
+            cell.month = month+1
         }else{
              cell.weekdayLabel.text = "\(WeekFirstDay + indexPath.item)"
+            cell.month = month+1
             
         }
         
-        cell.month = month+1
+        
         
  
         if !cell.eventWeekView.isHidden {
@@ -337,7 +337,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
         
         database.close()
-        
+    
     }
    
 }
