@@ -35,6 +35,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ///
+        checkYoon(year: cyear)
+        if isYoon {
+            lastDay[1] = 29
+        }else {
+            lastDay[1] = 28
+        }
+        emptyBox = getStartDay(year: cyear, month: cmonth)
+        posIndex = emptyBox
+        ///
+        
         curMonth = Months[cmonth]
         MonthLabel.text = "\(cyear) \(curMonth)"
         
@@ -55,16 +66,22 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             direct = 1
             
             //윤달체크
-            if leapCount < 5 {
-                leapCount += 1
-            }
-            if leapCount == 4 {
+//            if leapCount < 5 {
+//                leapCount += 1
+//            }
+//            if leapCount == 4 {
+//                lastDay[1] = 29
+//            }
+//            if leapCount == 5 {
+//                leapCount = 1
+//                lastDay[1] = 28
+//
+//            }
+            checkYoon(year: cyear)
+            if isYoon {
                 lastDay[1] = 29
-            }
-            if leapCount == 5 {
-                leapCount = 1
+            }else {
                 lastDay[1] = 28
-                
             }
             
             getStartDayPos()
@@ -94,17 +111,23 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             direct = -1
             
             //윤달체크
-            if leapCount > 0 {
-                leapCount -= 1
-            }
-            if leapCount == 0 {
+//            if leapCount > 0 {
+//                leapCount -= 1
+//            }
+//            if leapCount == 0 {
+//                lastDay[1] = 29
+//                leapCount = 4
+//            }
+//            else {
+//
+//                lastDay[1] = 28
+//
+//            }
+            checkYoon(year: cyear)
+            if isYoon {
                 lastDay[1] = 29
-                leapCount = 4
-            }
-            else {
-    
+            }else {
                 lastDay[1] = 28
-                
             }
             
             getStartDayPos()

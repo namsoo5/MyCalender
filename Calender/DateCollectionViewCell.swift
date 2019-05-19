@@ -12,5 +12,6 @@ class DateCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var weekdayLabel: UILabel!
     @IBOutlet weak var eventView: UIView!
+    @IBOutlet weak var eventWeekView: UIView!
     
 }

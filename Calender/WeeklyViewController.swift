@@ -22,8 +22,9 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource {
     var leapCount = 3 //윤달체크 
     
     var WeekFirstDay = 0
+    let app: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
    
@@ -86,6 +87,24 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource {
      //   default:
       //      fatalError()
       //  }
+        
+        if !cell.eventWeekView.isHidden {
+            cell.eventWeekView.isHidden = true
+            cell.eventWeekView.backgroundColor = UIColor.clear
+        }
+        
+        for schedule in app.scheduleSet{
+            if schedule.year == year &&  schedule.month == month+1
+            {
+                
+                if schedule.getDay(day: Int(cell.weekdayLabel.text!)!) {
+                    cell.eventWeekView.isHidden = false
+                    cell.eventWeekView.backgroundColor = UIColor.red
+                }
+                
+            }
+        }
+        
         
         return cell
         
