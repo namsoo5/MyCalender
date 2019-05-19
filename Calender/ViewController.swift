@@ -214,6 +214,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 if schedule.getDay(day: Int(cell.dateLabel.text!)!) {
                     print("실행")
                     print("\(schedule.getArray())")
+                    print("\(schedule.getContent())")
                     cell.eventView.isHidden = false
                     cell.eventView.backgroundColor = UIColor.red
                 }
@@ -270,11 +271,14 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     override func viewWillAppear(_ animated: Bool) {
         print("viewAppear")
-       sqlite()
+        sqlite()
        
     }
 
     func sqlite(){
+        
+        app.scheduleSet.removeAll()
+        
         let fileURL = try! FileManager.default
             .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent("event.sqlite")
@@ -300,16 +304,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                     for schedules in app.scheduleSet{
                         if schedules.year == Int(y) && schedules.month == Int(m){
                             flag = true
-                            if !schedules.getDay(day: Int(d) ?? 0){
+                            //if !schedules.getDay(day: Int(d) ?? 0){
                                 schedules.addDay(day: Int(d) ?? 0)
-                                
-                            }
+                                schedules.addContent(day: Int(d) ?? 0, content: c)
+                            //}
                         }
                     }
                     
                     // 입력되지않은 년도와 달이라면 새로 만듬
                     if !flag {
-                        let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0)
+                        let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
                         
                         app.scheduleSet.append(event)
                         //scheduleSet.append(event)

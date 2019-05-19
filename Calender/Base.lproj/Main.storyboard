@@ -568,6 +568,7 @@
                     <tabBarItem key="tabBarItem" title="일간" id="lj7-I2-hFt"/>
                     <connections>
                         <outlet property="dateLabel" destination="JsU-y5-Beu" id="v3Z-Cb-fbU"/>
+                        <outlet property="tableView" destination="now-lR-OqZ" id="j1l-cG-xfU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DNJ-Au-bF7" userLabel="First Responder" sceneMemberID="firstResponder"/>

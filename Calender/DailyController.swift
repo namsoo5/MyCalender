@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import FMDB
 
 class DailyController: UIViewController, UITableViewDataSource {
     
     var dday = day
     var lastDay = [31,28,31,30,31,30,31,31,30,31,30,31]
     var leapCount = 3 //윤달체크
+    let app: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+     var contentSet = [String]()
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var dateLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +35,8 @@ class DailyController: UIViewController, UITableViewDataSource {
             checkbeforeYear(dday)
         }
         dateLabel.text = "\(dyear)년 \(dmonth+1)월 \(dday)일"
+        tableView.reloadData()
+        
     }
     
     @IBAction func nextBt(_ sender: Any) {
@@ -39,18 +45,39 @@ class DailyController: UIViewController, UITableViewDataSource {
             checkNextYear(dday)
         }
         dateLabel.text = "\(dyear)년 \(dmonth+1)월 \(dday)일"
+        tableView.reloadData()
     }
     
     //MARK: - tableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        contentSet.removeAll()
+        
+        for schedule in app.scheduleSet{
+            if schedule.year == dyear &&  schedule.month == dmonth+1
+            {
+                //해당날짜에 포함된 내용 저장
+                for contents in schedule.getContent() {
+                    if let text = contents[dday] {
+                        contentSet.append(text)
+                    }
+                  
+                }
+                
+                return contentSet.count
+            }
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "dailyCell", for: indexPath)
         
-        cell.textLabel?.text = "test"
+       
+        
+       
+        cell.textLabel?.text = contentSet[indexPath.row]
+        
         
         return cell
     }

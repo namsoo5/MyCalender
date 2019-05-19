@@ -12,12 +12,13 @@ class Schedule{
     var year: Int!
     var month = Int()
     var day = [Int]()
+    var content = [[Int:String]]()
     
-    init(year y:Int, month m:Int, day d:Int) {
+    init(year y:Int, month m:Int, day d:Int, content c:String) {
         self.year = y
         self.month = m
         self.day.append(d)
-        
+        self.content.append([d:c])
     }
     
     func addDay(day d:Int){
@@ -31,4 +32,13 @@ class Schedule{
     func getArray() -> [Int] {
         return self.day
     }
+    
+    func addContent(day d:Int, content c:String){
+        self.content.append([d:c])
+    }
+    
+    func getContent() -> [[Int:String]] {
+        return self.content
+    }
+
 }
