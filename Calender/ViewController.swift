@@ -339,7 +339,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                         let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
                         
                         app.scheduleSet.append(event)
-                        //scheduleSet.append(event)
+                        
                     }
                     
                 }

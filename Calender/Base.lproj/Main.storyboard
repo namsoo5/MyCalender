@@ -252,7 +252,7 @@
                                     <action selector="cancelBt:" destination="sV8-yQ-A6Y" eventType="touchUpInside" id="2hS-A7-5OC"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="오늘은 5월 19일" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kYF-HO-Z0U">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="내용을 입력합니다." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kYF-HO-Z0U">
                                 <rect key="frame" x="100" y="222" width="304" height="253"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -458,13 +458,14 @@
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="YrC-Kf-dq0" id="RnH-6V-MmK"/>
+                                    <outlet property="delegate" destination="YrC-Kf-dq0" id="Me5-bf-vzM"/>
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cle-2k-Xac">
                                 <rect key="frame" x="179" y="683" width="56" height="30"/>
                                 <state key="normal" title="일정 등록"/>
                                 <connections>
-                                    <segue destination="sV8-yQ-A6Y" kind="presentation" id="P1N-7w-DCH"/>
+                                    <action selector="addEvent:" destination="YrC-Kf-dq0" eventType="touchUpInside" id="LTi-Dd-W1P"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="E6D-jD-ft4">
@@ -474,15 +475,27 @@
                                     <constraint firstAttribute="width" secondItem="E6D-jD-ft4" secondAttribute="height" multiplier="170:147" id="tPK-2r-CKX"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="weekCell" id="tsa-Ux-0OP">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="weekCell" textLabel="yze-zu-mJc" style="IBUITableViewCellStyleDefault" id="tsa-Ux-0OP">
                                         <rect key="frame" x="0.0" y="28" width="340" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tsa-Ux-0OP" id="0Ux-h8-lFm">
                                             <rect key="frame" x="0.0" y="0.0" width="340" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yze-zu-mJc">
+                                                    <rect key="frame" x="20" y="0.0" width="300" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="YrC-Kf-dq0" id="xdA-Nc-Nbb"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -512,6 +525,7 @@
                         <outlet property="collectionView" destination="u66-Ny-V9V" id="Cvz-9R-WLj"/>
                         <outlet property="monthLabel" destination="qsy-36-qUO" id="8wu-IR-pa9"/>
                         <outlet property="tableView" destination="E6D-jD-ft4" id="fIs-vg-JYi"/>
+                        <segue destination="sV8-yQ-A6Y" kind="presentation" identifier="weekEvent" id="1eX-Gi-pyS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vFy-h9-dEg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -529,6 +543,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="APC-UV-xYy">
                                 <rect key="frame" x="179" y="683" width="56" height="30"/>
                                 <state key="normal" title="일정 등록"/>
+                                <connections>
+                                    <segue destination="sV8-yQ-A6Y" kind="presentation" id="rOK-Ma-JV0"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2019년 5월 19일" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JsU-y5-Beu">
                                 <rect key="frame" x="147" y="124" width="120" height="21"/>
@@ -629,6 +646,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="UKr-Ab-eyE"/>
+        <segue reference="1eX-Gi-pyS"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -14,4 +14,7 @@ class DateCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var eventView: UIView!
     @IBOutlet weak var eventWeekView: UIView!
     
+    var checkbeforeMonth = false
+    var month = -1
+    var day = -1
 }
