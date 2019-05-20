@@ -60,6 +60,7 @@ class DailyController: UIViewController, UITableViewDataSource {
     
     override func viewWillAppear(_ animated: Bool) {
         sqlite()
+         tabsave(tabnum: 2)
         self.tableView.reloadData()
     }
     //MARK: - tableView
@@ -169,7 +170,6 @@ class DailyController: UIViewController, UITableViewDataSource {
             let rs = try database.executeQuery("select year, month, day, content from calender", values: nil)
             while rs.next() {
                 if let y = rs.string(forColumn: "year"), let m = rs.string(forColumn: "month") , let d = rs.string(forColumn: "day") , let c = rs.string(forColumn: "content") {
-                    print("year = \(y), month = \(m), day = \(d), content = \(c)")
                     
                     let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
                     app.scheduleSet.append(event)
@@ -184,4 +184,37 @@ class DailyController: UIViewController, UITableViewDataSource {
         
     }
 
+    func tabsave(tabnum n: Int){
+        let fileURL = try! FileManager.default
+            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .appendingPathComponent("event.sqlite")
+        let database = FMDatabase(url: fileURL)
+        
+        guard database.open() else {
+            print("Unable to open database")
+            return
+        }
+        
+        do {
+            // try database.executeUpdate("drop table tab", values: nil)
+            
+            try database.executeUpdate("create table if not exists tab(i int)", values: nil)
+            try database.executeUpdate("insert into tab (i) values (?)", values: [n])
+            
+            let rs = try database.executeQuery("select i from tab", values: nil)
+            if rs.columnCount > 0 {
+                let i:Int = rs.long(forColumn: "i")
+                try database.executeUpdate("update tab set i = ? where i = ?", values: [n, i])
+            }
+            
+            
+            print("tabnum: \(n)저장" )
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        
+        database.close()
+        
+        
+    }
 }

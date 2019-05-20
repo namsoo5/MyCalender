@@ -29,6 +29,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var select = -1 //선택날짜 체크
     var selectDay = -1 //다음뷰로 넘길 선택날짜
     
+    var tabnum = 0
     
     let app: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -50,7 +51,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         MonthLabel.text = "\(cyear) \(curMonth)"
         
         sqlite()
+        tabmove()
+        print("이동이동: \(tabnum)")
+        
     }
+    
    
 
     //MARK: - 버튼 처리
@@ -252,7 +257,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     override func viewWillAppear(_ animated: Bool) {
         print("viewAppear")
         sqlite()
-       
+        self.tabBarController?.selectedIndex = tabnum
+        tabsave(tabnum: 0)
+        
     }
 
     func sqlite(){
@@ -277,7 +284,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             let rs = try database.executeQuery("select year, month, day, content from calender", values: nil)
             while rs.next() {
                 if let y = rs.string(forColumn: "year"), let m = rs.string(forColumn: "month") , let d = rs.string(forColumn: "day") , let c = rs.string(forColumn: "content") {
-                    print("year = \(y), month = \(m), day = \(d), content = \(c)")
+                    //print("year = \(y), month = \(m), day = \(d), content = \(c)")
                     
                     let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
                     app.scheduleSet.append(event)
@@ -292,6 +299,75 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         database.close()
         
         self.collectionView.reloadData()
+    }
+    
+    func tabsave(tabnum n: Int){
+        let fileURL = try! FileManager.default
+            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .appendingPathComponent("event.sqlite")
+        let database = FMDatabase(url: fileURL)
+        
+        guard database.open() else {
+            print("Unable to open database")
+            return
+        }
+
+        do {
+            // try database.executeUpdate("drop table tab", values: nil)
+            
+            try database.executeUpdate("create table if not exists tab(i int)", values: nil)
+            try database.executeUpdate("insert into tab (i) values (?)", values: [n])
+            
+            let rs = try database.executeQuery("select i from tab", values: nil)
+            if rs.columnCount > 0 {
+                let i:Int = rs.long(forColumn: "i")
+                try database.executeUpdate("update tab set i = ? where i = ?", values: [n, i])
+                
+            }
+            
+        
+            
+            print("tabnum: \(n)저장" )
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        
+        database.close()
+        
+        
+    }
+    
+    func tabmove() {
+        let fileURL = try! FileManager.default
+            .url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .appendingPathComponent("event.sqlite")
+        let database = FMDatabase(url: fileURL)
+        
+        guard database.open() else {
+            print("Unable to open database")
+            return
+        }
+        
+        do {
+           
+            
+            let rs = try database.executeQuery("select i from tab", values: nil)
+            
+            while rs.next() {
+                if let i = rs.string(forColumn: "i") {
+                    print("index: \(i)")
+                    tabnum = Int(i)!
+                }
+                
+            }
+
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        
+        database.close()
+        
+        
     }
 }
 
