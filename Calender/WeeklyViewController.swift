@@ -22,11 +22,14 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
     var selectCell = UICollectionViewCell() //선택날짜 cell
     var selectDay = -1 //다음뷰로 넘길 선택날짜
     var selectMon = -1
+    var selectYear = -1
     var contentSet = [String]()
     var tableFirstDay = 0
     var WeekFirstDay = 0
     var beforeMonthDay = Int()
     var direct = -2 //현상태 리로드시 체크 플레그
+    var startyear = year
+    var startmonth = month
     
     var beforeMonth = Int()
     
@@ -72,11 +75,11 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "weekEvent"{
             guard let VC:AddEventViewController = segue.destination as? AddEventViewController else {return}
-           
+            
             VC.eventMonth = selectMon
             
             VC.eventDay = selectDay
-            VC.eventYear = year
+            VC.eventYear = selectYear
         }
     }
     
@@ -108,6 +111,8 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
             curMonth = Months[month]
             monthLabel.text = "\(year) \(curMonth)"
         }
+        startyear = year
+        startmonth = month
         
         beforeMonthDay = WeekFirstDay  // 리로드시 오류해결 저장
         collectionView.reloadData()
@@ -119,6 +124,10 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         selectDay = -1
         WeekFirstDay += 7
         beforeMonthDay = WeekFirstDay  // 리로드시 오류해결 저장
+        
+        startyear = year
+        startmonth = month
+        
         collectionView.reloadData()
         tableView.reloadData()
     }
@@ -127,28 +136,53 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         contentSet.removeAll()
         
-        
         for schedule in app.scheduleSet{
-            if schedule.year == year{
+            
+            var start = tableFirstDay
+            var flag = false
+            
+            
+            for i in 0..<7{
+            var curyear = startyear
+            var curmonth = startmonth
                 
-                var start = tableFirstDay
-                var startmonth = month
+            
                 
-                for i in 0..<7{
+                if curmonth == -1 {
+                    curmonth = 0
+                }
+                
+                
+                if flag {
+                    curmonth += 1
+                    if curmonth > 11 {
+                        curmonth = 0
+                        curyear += 1
+                    }
                     
-                    if start+i > lastDay[month] {
-                        let newday = start - lastDay[month]
-                        start = newday
-                        startmonth += 1
-                        
-                        
+                    
+                }else if start+i > lastDay[curmonth] {
+                    let newday = start - lastDay[curmonth]
+                    start = newday
+                    curmonth += 1
+                    if curmonth > 11 {
+                        curmonth = 0
+                        curyear += 1
                     }
-                    if schedule.day == start+i && schedule.month == startmonth + 1 {
-                        contentSet.append(schedule.content)
-                        break
-                    }
+                    flag = true
+                    
+                   
+                }
+                
+                
+                
+               print("\(year), \(month), \(curyear), \(curmonth), \(start+i)")
+                if schedule.year == curyear && schedule.day == start+i && schedule.month == curmonth + 1 {
+                    contentSet.append(schedule.content)
+                    break
                 }
             }
+            
         }
         
         return contentSet.count
@@ -177,8 +211,12 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         cell.backgroundColor = UIColor.clear
         
+        var curmonth = month
+        if curmonth == -1 {
+            curmonth = 0
+        }
         
-        if WeekFirstDay + indexPath.item > lastDay[month] {   //다음달로 넘어 가는경우
+        if WeekFirstDay + indexPath.item > lastDay[curmonth] {   //다음달로 넘어 가는경우
             checkNextYear(WeekFirstDay + indexPath.item)
             
             
@@ -198,6 +236,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
             self.tableView.reloadData()
         }
         
+        cell.year = year
  
         if !cell.eventWeekView.isHidden {
             cell.eventWeekView.isHidden = true
@@ -205,10 +244,9 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
         
         for schedule in app.scheduleSet{
-            if schedule.year == year && schedule.month == month+1 && schedule.day == Int(cell.weekdayLabel.text!)!
+            if schedule.year == cell.year && schedule.month == cell.month && schedule.day == Int(cell.weekdayLabel.text!)!
             {
                 
-
                     cell.eventWeekView.isHidden = false
                     cell.eventWeekView.backgroundColor = UIColor.red
 
@@ -230,6 +268,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         selectCell.backgroundColor = UIColor.gray
         selectDay = Int(cell.weekdayLabel.text!)!
         selectMon = cell.month
+        selectYear = cell.year
     
     }
  
@@ -242,7 +281,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
             if inputdate >= lastDay[month] {
                 month = 0  //1월로
                 year += 1  //1년증가
-  
+
                 checkYoon(year: year)
                 if isYoon {
                     lastDay[1] = 29
@@ -255,7 +294,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
             
         default:
             month += 1
-            WeekFirstDay = WeekFirstDay - lastDay[month-1]
+            WeekFirstDay = month==0 ? WeekFirstDay - lastDay[month] : WeekFirstDay - lastDay[month-1]
     
         
         }

@@ -17,4 +17,5 @@ class DateCollectionViewCell: UICollectionViewCell {
   //  var checkbeforeMonth = false
     var month = -1
     var day = -1
+    var year = -1
 }
