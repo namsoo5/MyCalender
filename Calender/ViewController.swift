@@ -15,7 +15,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @IBOutlet weak var MonthLabel: UILabel!
     
     let Months = ["1월", "2월", "3월", "4월","5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"]
-    //let weeks = ["Sun","Mon", "Tue", "Wen", "Thur", "Fri", "Sat"]
+    
     var lastDay = [31,28,31,30,31,30,31,31,30,31,30,31]
     
     var curMonth = ""
@@ -29,7 +29,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     var select = -1 //선택날짜 체크
     var selectDay = -1 //다음뷰로 넘길 선택날짜
     
-    //var scheduleSet = [Schedule]()
+    
     let app: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
@@ -65,18 +65,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             cyear += 1  //1년증가
             direct = 1
             
-            //윤달체크
-//            if leapCount < 5 {
-//                leapCount += 1
-//            }
-//            if leapCount == 4 {
-//                lastDay[1] = 29
-//            }
-//            if leapCount == 5 {
-//                leapCount = 1
-//                lastDay[1] = 28
-//
-//            }
             checkYoon(year: cyear)
             if isYoon {
                 lastDay[1] = 29
@@ -110,19 +98,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             cyear -= 1
             direct = -1
             
-            //윤달체크
-//            if leapCount > 0 {
-//                leapCount -= 1
-//            }
-//            if leapCount == 0 {
-//                lastDay[1] = 29
-//                leapCount = 4
-//            }
-//            else {
-//
-//                lastDay[1] = 28
-//
-//            }
+           
             checkYoon(year: cyear)
             if isYoon {
                 lastDay[1] = 29
@@ -231,16 +207,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }
         
         for schedule in app.scheduleSet{
-            if schedule.year == cyear &&  schedule.month == cmonth+1
+            if schedule.year == cyear &&  schedule.month == cmonth+1 && schedule.day == Int(cell.dateLabel.text!)!
             {
             
-                if schedule.getDay(day: Int(cell.dateLabel.text!)!) {
-                    print("실행")
-                    print("\(schedule.getArray())")
-                    print("\(schedule.getContent())")
                     cell.eventView.isHidden = false
                     cell.eventView.backgroundColor = UIColor.red
-                }
+
                 
             }
         }
@@ -250,22 +222,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     func getStartDayPos() {
         switch direct {
-//        case 0:
-//            switch day{
-//            case 1...7:
-//                emptyBox = weekday - day
-//            case 8...14:
-//                emptyBox = weekday - day - 7
-//            case 14...21:
-//                emptyBox = weekday - day - 14
-//            case 21...28:
-//                emptyBox = weekday - day - 21
-//            case 29...31:
-//                emptyBox = weekday - day - 28
-//            default:
-//                break
-//            }
-//            posIndex = emptyBox
+
             
         case 1...:
             nextEmptyBox = (posIndex + lastDay[cmonth]) % 7
@@ -322,25 +279,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 if let y = rs.string(forColumn: "year"), let m = rs.string(forColumn: "month") , let d = rs.string(forColumn: "day") , let c = rs.string(forColumn: "content") {
                     print("year = \(y), month = \(m), day = \(d), content = \(c)")
                     
-                    var flag = false
-                    //이미 같은년도 같은달 일정등록시 날짜만 저장
-                    for schedules in app.scheduleSet{
-                        if schedules.year == Int(y) && schedules.month == Int(m){
-                            flag = true
-                            //if !schedules.getDay(day: Int(d) ?? 0){
-                                schedules.addDay(day: Int(d) ?? 0)
-                                schedules.addContent(day: Int(d) ?? 0, content: c)
-                            //}
-                        }
-                    }
+                    let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
+                    app.scheduleSet.append(event)
                     
-                    // 입력되지않은 년도와 달이라면 새로 만듬
-                    if !flag {
-                        let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
-                        
-                        app.scheduleSet.append(event)
-                        
-                    }
                     
                 }
             }

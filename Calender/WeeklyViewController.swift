@@ -23,9 +23,11 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
     var selectDay = -1 //다음뷰로 넘길 선택날짜
     var selectMon = -1
     var contentSet = [String]()
-    
+    var tableFirstDay = 0
     var WeekFirstDay = 0
     var beforeMonthDay = Int()
+    var direct = -2 //현상태 리로드시 체크 플레그
+    
     var beforeMonth = Int()
     
     let app: AppDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -48,11 +50,22 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
         
         WeekFirstDay = day - weekday + 1  //현재날짜가 포함된 주의 처음
-       
+        tableFirstDay = WeekFirstDay
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         sqlite()
+        if direct != -2 {  // 리로드시 인덱스 오류 수정
+            WeekFirstDay = beforeMonthDay
+            if WeekFirstDay+7 > lastDay[month] {
+                month -= 1
+            }
+            
+        }
+        self.collectionView.reloadData()
+        self.tableView.reloadData()
 
     }
     
@@ -71,6 +84,7 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
     //MARK: - 버튼
     
     @IBAction func addEvent(_ sender: Any) {
+        direct = 0
         if selectDay == -1 {
             let alert:UIAlertController = UIAlertController.init(title: "확인", message: "날짜를 선택해주세요", preferredStyle: .alert )
             let ok:UIAlertAction = UIAlertAction.init(title: "확인", style: .default , handler: nil)
@@ -82,27 +96,29 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     @IBAction func beforeBt(_ sender: Any) {
-        
+        direct = -1
         selectDay = -1
         WeekFirstDay -= 7
         
-        if WeekFirstDay < 1 {
+        
+        if WeekFirstDay < 1 {   // 저번달로 넘어 가는경우
             checkbeforeYear(WeekFirstDay)
             WeekFirstDay = lastDay[month] + WeekFirstDay
-
+            
             curMonth = Months[month]
             monthLabel.text = "\(year) \(curMonth)"
         }
         
+        beforeMonthDay = WeekFirstDay  // 리로드시 오류해결 저장
         collectionView.reloadData()
         tableView.reloadData()
     }
     
     @IBAction func nextBt(_ sender: Any) {
-    
+        direct = 1
         selectDay = -1
         WeekFirstDay += 7
-        
+        beforeMonthDay = WeekFirstDay  // 리로드시 오류해결 저장
         collectionView.reloadData()
         tableView.reloadData()
     }
@@ -112,51 +128,32 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         contentSet.removeAll()
         
         
-        
-        let start = WeekFirstDay
         for schedule in app.scheduleSet{
-            if schedule.year == year &&  schedule.month == month+1
-            {
-                //해당날짜에 포함된 내용 저장
-                for contents in schedule.getContent() {
-                    
-                    for i in 0...6{
-                        if start+i > lastDay[month]{
-                            nextMonthDb(month: month+2, start: start+i, count: 6-i)
-                            break
-                        }
-                        if let text = contents[start+i] {
-                            contentSet.append("\(start+i)일 - \(text)")
-                        }
-                    }
-       
-                    
-                }
-                return contentSet.count
-            }
-        }
-        return 0
-        
-    }
-    
-    func nextMonthDb(month m :Int, start s :Int, count c :Int){
-        let start = s-lastDay[m]
-        for schedule in app.scheduleSet{
-            if schedule.year == year &&  schedule.month == m
-            {
-                //해당날짜에 포함된 내용 저장
-                for contents in schedule.getContent() {
-                    
-                    for i in 0...c{
-                        if let text = contents[start+i] {
-                            contentSet.append("\(start+i)일 - \(text)")
-                        }
-                    }
-                    
-                }
+            if schedule.year == year{
                 
+                var start = tableFirstDay
+                var startmonth = month
+                
+                for i in 0..<7{
+                    
+                    if start+i > lastDay[month] {
+                        let newday = start - lastDay[month]
+                        start = newday
+                        startmonth += 1
+                        
+                        
+                    }
+                    if schedule.day == start+i && schedule.month == startmonth + 1 {
+                        contentSet.append(schedule.content)
+                        break
+                    }
+                }
             }
         }
+        
+        return contentSet.count
+        
+
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -180,9 +177,10 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         cell.backgroundColor = UIColor.clear
         
-        if WeekFirstDay + indexPath.item > lastDay[month] {
+        
+        if WeekFirstDay + indexPath.item > lastDay[month] {   //다음달로 넘어 가는경우
             checkNextYear(WeekFirstDay + indexPath.item)
-            //WeekFirstDay = WeekFirstDay - lastDay[month]
+            
             
             curMonth = Months[month]
             monthLabel.text = "\(year) \(curMonth)"
@@ -194,7 +192,11 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
             
         }
         
-        
+        if indexPath.item == 0{
+            tableFirstDay = Int(cell.weekdayLabel.text!)!
+            print("save: \(tableFirstDay)")
+            self.tableView.reloadData()
+        }
         
  
         if !cell.eventWeekView.isHidden {
@@ -203,14 +205,13 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
         
         for schedule in app.scheduleSet{
-            if schedule.year == year &&  schedule.month == month+1
+            if schedule.year == year && schedule.month == month+1 && schedule.day == Int(cell.weekdayLabel.text!)!
             {
                 
-                if schedule.getDay(day: Int(cell.weekdayLabel.text!)!) {
+
                     cell.eventWeekView.isHidden = false
                     cell.eventWeekView.backgroundColor = UIColor.red
-                }
-                
+
             }
         }
         
@@ -310,26 +311,9 @@ class WeeklyViewController: UIViewController, UICollectionViewDataSource, UIColl
                 if let y = rs.string(forColumn: "year"), let m = rs.string(forColumn: "month") , let d = rs.string(forColumn: "day") , let c = rs.string(forColumn: "content") {
                     print("year = \(y), month = \(m), day = \(d), content = \(c)")
                     
-                    var flag = false
-                    //이미 같은년도 같은달 일정등록시 날짜만 저장
-                    for schedules in app.scheduleSet{
-                        if schedules.year == Int(y) && schedules.month == Int(m){
-                            flag = true
-                            //if !schedules.getDay(day: Int(d) ?? 0){
-                            schedules.addDay(day: Int(d) ?? 0)
-                            schedules.addContent(day: Int(d) ?? 0, content: c)
-                            //}
-                        }
-                    }
-                    
-                    // 입력되지않은 년도와 달이라면 새로 만듬
-                    if !flag {
-                        let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
-                        
-                        app.scheduleSet.append(event)
-                        
-                    }
-                    
+                    let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)                    
+                    app.scheduleSet.append(event)
+
                 }
             }
         } catch {

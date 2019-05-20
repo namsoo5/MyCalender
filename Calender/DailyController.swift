@@ -68,28 +68,17 @@ class DailyController: UIViewController, UITableViewDataSource {
         contentSet.removeAll()
         
         for schedule in app.scheduleSet{
-            if schedule.year == dyear &&  schedule.month == dmonth+1
+            if schedule.year == dyear && schedule.month == dmonth+1 && schedule.day == dday
             {
-                //해당날짜에 포함된 내용 저장
-                for contents in schedule.getContent() {
-                    if let text = contents[dday] {
-                        contentSet.append(text)
-                    }
-                  
-                }
-                
-                return contentSet.count
+                contentSet.append(schedule.content)
             }
         }
-        return 0
+        return contentSet.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "dailyCell", for: indexPath)
         
-       
-        
-       
         cell.textLabel?.text = contentSet[indexPath.row]
         
         
@@ -182,26 +171,9 @@ class DailyController: UIViewController, UITableViewDataSource {
                 if let y = rs.string(forColumn: "year"), let m = rs.string(forColumn: "month") , let d = rs.string(forColumn: "day") , let c = rs.string(forColumn: "content") {
                     print("year = \(y), month = \(m), day = \(d), content = \(c)")
                     
-                    var flag = false
-                    //이미 같은년도 같은달 일정등록시 날짜만 저장
-                    for schedules in app.scheduleSet{
-                        if schedules.year == Int(y) && schedules.month == Int(m){
-                            flag = true
-                            //if !schedules.getDay(day: Int(d) ?? 0){
-                            schedules.addDay(day: Int(d) ?? 0)
-                            schedules.addContent(day: Int(d) ?? 0, content: c)
-                            //}
-                        }
-                    }
-                    
-                    // 입력되지않은 년도와 달이라면 새로 만듬
-                    if !flag {
-                        let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
-                        
-                        app.scheduleSet.append(event)
-                        
-                    }
-                    
+                    let event = Schedule.init(year: Int(y) ?? 0, month: Int(m) ?? 0, day: Int(d) ?? 0, content: c)
+                    app.scheduleSet.append(event)
+
                 }
             }
         } catch {
